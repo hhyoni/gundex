@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { CompareProvider } from './context/CompareContext';
+import ListScreen from './screens/ListScreen';
+import SearchScreen from './screens/SearchScreen';
+import CompareScreen from './screens/CompareScreen';
+import DetailScreen from './screens/DetailScreen';
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+function Tabs() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="도감" component={ListScreen} />
+      <Tab.Screen name="검색" component={SearchScreen} />
+      <Tab.Screen name="비교" component={CompareScreen} />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <CompareProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+          <Stack.Screen name="Detail" component={DetailScreen} options={{ title: '상세 정보' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CompareProvider>
+  );
+}
